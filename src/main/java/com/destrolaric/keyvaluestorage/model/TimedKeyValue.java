@@ -2,11 +2,12 @@ package com.destrolaric.keyvaluestorage.model;
 
 import javax.annotation.Generated;
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Date;
 
 @Entity
 @Table
-public class TimedKeyValue {
+public class TimedKeyValue implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

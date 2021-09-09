@@ -23,5 +23,8 @@ public interface TimedKeyValueRepository extends CrudRepository<TimedKeyValue, I
     @Transactional
     void deleteAllExpiredRows();
 
-
+    @Modifying
+    @Query("delete from TimedKeyValue")
+    @Transactional
+    void deleteAllRows();
 }

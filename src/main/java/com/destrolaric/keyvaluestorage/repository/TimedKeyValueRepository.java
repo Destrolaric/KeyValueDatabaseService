@@ -10,21 +10,27 @@ import org.springframework.transaction.annotation.Transactional;
 
 public interface TimedKeyValueRepository extends CrudRepository<TimedKeyValue, Integer> {
 
-    @Query("select p.content from TimedKeyValue p where p.key = :key")
-    String findContentByKey(@Param("key") String key);
+  @Query("select p.content from TimedKeyValue p where p.key = :key")
+  String findContentByKey(@Param("key") String key);
 
-    @Modifying
-    @Query("update TimedKeyValue t set t.content = :content,t.ttl = :ttl,t.date=CURRENT_TIMESTAMP where t.key = :key")
-    @Transactional
-    int updateContentByKey(@Param("key") String key, @Param("ttl") int ttl, @Param("content") String content);
+  @Modifying
+  @Query("update TimedKeyValue t set t.content = :content,t.ttl = :ttl,t.date=CURRENT_TIMESTAMP where t.key = :key")
+  @Transactional
+  void updateContentByKey(@Param("key") String key, @Param("ttl") int ttl,
+      @Param("content") String content);
 
-    @Modifying
-    @Query("delete from TimedKeyValue t where DATEADD('second', t.ttl, t.date) < CURRENT_TIMESTAMP")
-    @Transactional
-    void deleteAllExpiredRows();
+  @Modifying
+  @Query("delete from TimedKeyValue t where DATEADD('second', t.ttl, t.date) < CURRENT_TIMESTAMP")
+  @Transactional
+  void deleteAllExpiredRows();
 
-    @Modifying
-    @Query("delete from TimedKeyValue")
-    @Transactional
-    void deleteAllRows();
+  @Modifying
+  @Query("delete from TimedKeyValue t where t.key = :key")
+  @Transactional
+  void deleteByKey(@Param("key") String key);
+
+  @Modifying
+  @Query("delete from TimedKeyValue")
+  @Transactional
+  void deleteAllRows();
 }

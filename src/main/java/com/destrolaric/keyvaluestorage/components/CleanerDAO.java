@@ -10,20 +10,19 @@ import org.springframework.stereotype.Component;
 import javax.annotation.PostConstruct;
 
 /**
- * Special class to clean rows with ended ttl,
- * due to h2 not having functionality we do it manually
+ * Special class to clean rows with ended ttl, due to h2 not having functionality we do it manually
  */
 @Component
 @EnableAsync
 public class CleanerDAO {
 
-    @Autowired
-    TimedKeyValueRepository timedKeyValueRepository;
+  @Autowired
+  TimedKeyValueRepository timedKeyValueRepository;
 
-    @PostConstruct
-    @Async
-    @Scheduled(fixedDelay = 1)
-    void cleanOldRows() {
-        timedKeyValueRepository.deleteAllExpiredRows();
-    }
+  @PostConstruct
+  @Async
+  @Scheduled(fixedDelay = 1)
+  void cleanOldRows() {
+    timedKeyValueRepository.deleteAllExpiredRows();
+  }
 }
